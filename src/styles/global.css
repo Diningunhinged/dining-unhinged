@@ -1,27 +1,13 @@
-:root {
-    /* Dining Unhinged Brand Colors */
-    --charcoal: #0D0D0F;
-    --slate: #1C1C1E;
-    --gold: #D4AF37;
-    --whiskey: #B87333;
-    --cream: #F5F2E8;
-    --smoke: #A8A8A8;
-    /* Extras */
-    --white: #FFFFFF;
-    --black: #000000;
-    /* Spacing */
-    --max-width: 1200px;
-    /* Rounded Corners */
-    --radius: 12px;
-}
-* {
-    margin: 0;
-    padding: 0;     
-    box-sizing: border-box;
-}
-body {
-    background: var(--charcoal);
-    color: var(--cream);
-    font-family: Arial, Helvetica, sans-serif;
-    line-height: 1.6;
-}
+/* ==========================================
+   DINING UNHINGED
+========================================== */
+
+@import "./variables.css";
+@import "./typography.css";
+@import "./header.css";
+@import "./hero.css";
+@import "./cards.css";
+@import "./article.css";
+@import "./footer.css";
+@import "./contact.css";
+@import "./responsive.css";

@@ -1,0 +1,51 @@
+---
+interface Props {
+  title: string;
+  rating: number;
+  category: string;
+  excerpt: string;
+  image: string;
+  url: string;
+}
+
+const {
+  title,
+  rating,
+  category,
+  excerpt,
+  image,
+  url,
+} = Astro.props;
+---
+
+<article class="review-card">
+
+  <img
+    src={image}
+    alt={title}
+    class="review-image"
+  />
+
+  <div class="review-body">
+
+    <p class="review-category">
+      {category}
+    </p>
+
+    <h3>{title}</h3>
+
+    <div class="review-rating">
+      {"★".repeat(rating)}
+    </div>
+
+    <p class="review-excerpt">
+      {excerpt}
+    </p>
+
+    <a href={url} class="read-story">
+      Read Story →
+    </a>
+
+  </div>
+
+</article>

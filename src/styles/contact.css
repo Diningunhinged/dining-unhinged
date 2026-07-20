@@ -1,0 +1,87 @@
+/* ==========================================
+   CONTACT PAGE
+========================================== */
+
+.contact-page {
+
+    max-width: 850px;
+
+    margin: 0 auto;
+
+}
+
+.contact-page h1 {
+
+    font-size: clamp(3.5rem, 8vw, 5rem);
+
+    margin-bottom: 2rem;
+
+}
+
+.contact-intro {
+
+    color: var(--smoke);
+
+    font-size: 1.25rem;
+
+    line-height: 1.9;
+
+    margin-bottom: 4rem;
+
+}
+
+.contact-card {
+
+    background: var(--slate);
+
+    border: 1px solid rgba(212,175,55,.08);
+
+    border-radius: var(--radius);
+
+    padding: 2.5rem;
+
+    margin-bottom: 2rem;
+
+    transition: all .25s ease;
+
+}
+
+.contact-card:hover {
+
+    border-color: rgba(212,175,55,.25);
+
+    transform: translateY(-4px);
+
+}
+
+.contact-card h2 {
+
+    color: var(--gold);
+
+    margin-bottom: 1rem;
+
+}
+
+.contact-card p {
+
+    color: var(--cream);
+
+    line-height: 1.8;
+
+}
+
+.contact-card a {
+
+    color: var(--gold);
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+}
+
+.contact-card a:hover {
+
+    color: var(--cream);
+
+}

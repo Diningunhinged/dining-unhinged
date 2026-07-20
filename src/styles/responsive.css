@@ -1,0 +1,150 @@
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 1000px) {
+
+    .featured-story {
+
+        grid-template-columns: 1fr;
+
+        gap: 3rem;
+
+    }
+
+    .review-details {
+
+        grid-template-columns: repeat(2,1fr);
+
+    }
+
+    .footer-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 3rem;
+
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .site-header .container {
+
+        flex-direction: column;
+
+        justify-content: center;
+
+        gap: 1.5rem;
+
+        height: auto;
+
+        padding: 2rem 0;
+
+    }
+
+    .site-logo {
+
+        height: 90px;
+
+        margin-bottom: 0;
+
+    }
+
+    .nav-links {
+
+        gap: 1.25rem;
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+
+    }
+
+    .hero {
+
+        min-height: auto;
+
+        padding: 5rem 0;
+
+    }
+
+    .hero-main,
+    .hero-accent {
+
+        font-size: 4rem;
+
+    }
+
+    .hero-small {
+
+        margin-left: 0;
+
+        letter-spacing: 4px;
+
+    }
+
+    .hero-description {
+
+        font-size: 1.15rem;
+
+    }
+
+    .restaurant-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .review-details {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .footer-grid {
+
+        text-align: center;
+
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .container,
+    main {
+
+        width: min(100% - 2rem, var(--max-width));
+
+        padding: 0;
+
+    }
+
+    .hero-main,
+    .hero-accent {
+
+        font-size: 3rem;
+
+    }
+
+    .article-hero h1 {
+
+        font-size: 3.75rem;
+
+    }
+
+    .article-deck {
+
+        font-size: 1.25rem;
+
+    }
+
+    .hero-button {
+
+        width: 100%;
+
+    }
+
+}

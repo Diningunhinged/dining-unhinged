@@ -1,0 +1,69 @@
+/* TEST 123 */
+/* ==========================================
+   VARIABLES
+========================================== */
+
+:root {
+
+  --charcoal: #0d0d0f;
+  --slate: #1c1c1e;
+  --gold: #d4af37;
+  --whiskey: #b87333;
+  --cream: #f5f2e8;
+  --smoke: #a8a8a8;
+
+  --white: #ffffff;
+  --black: #000000;
+
+  --max-width: 1200px;
+
+  --radius: 12px;
+
+  --transition: .25s ease;
+
+}
+
+/* ==========================================
+   RESET
+========================================== */
+
+*,
+*::before,
+*::after{
+
+    margin:0;
+    padding:0;
+
+    box-sizing:border-box;
+
+}
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+img{
+
+    display:block;
+
+    max-width:100%;
+
+    user-select:none;
+
+}
+
+a{
+
+    transition:var(--transition);
+
+}
+
+::selection{
+
+    background:var(--gold);
+
+    color:var(--charcoal);
+
+}

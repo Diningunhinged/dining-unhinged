@@ -1,0 +1,214 @@
+/* ==========================================
+   REVIEW CARDS
+========================================== */
+
+.review-card{
+
+    display:flex;
+
+    flex-direction:column;
+
+    overflow:hidden;
+
+    background:var(--slate);
+
+    border:1px solid rgba(255,255,255,.05);
+
+    border-radius:var(--radius);
+
+    transition:all .3s ease;
+
+}
+
+.review-card:hover{
+
+    transform:translateY(-8px);
+
+    border-color:rgba(212,175,55,.30);
+
+    box-shadow:0 20px 50px rgba(0,0,0,.35);
+
+}
+
+.review-image{
+
+    width:100%;
+
+    aspect-ratio:16/10;
+
+    object-fit:cover;
+
+    transition:transform .35s ease;
+
+}
+
+.review-card:hover .review-image{
+
+    transform:scale(1.04);
+
+}
+
+.review-body{
+
+    display:flex;
+
+    flex-direction:column;
+
+    flex:1;
+
+    padding:2rem;
+
+}
+
+.review-category{
+
+    color:var(--gold);
+
+    text-transform:uppercase;
+
+    letter-spacing:3px;
+
+    font-size:.75rem;
+
+    font-weight:600;
+
+    margin-bottom:1rem;
+
+}
+
+.review-body h3{
+
+    font-size:2.3rem;
+
+    margin-bottom:.75rem;
+
+}
+
+.review-rating{
+
+    color:var(--gold);
+
+    margin-bottom:1.5rem;
+
+}
+
+.review-excerpt{
+
+    flex:1;
+
+    color:var(--smoke);
+
+    line-height:1.8;
+
+    margin-bottom:2rem;
+
+}
+
+.read-story{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:.5rem;
+
+    color:var(--gold);
+
+    text-decoration:none;
+
+    font-weight:700;
+
+}
+
+.read-story:hover{
+
+    gap:1rem;
+
+}
+
+/* ==========================================
+   RESTAURANT GRID
+========================================== */
+
+.restaurant-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
+
+    gap:2.5rem;
+
+    margin-top:3rem;
+
+}
+
+/* ==========================================
+   REVIEW DETAILS
+========================================== */
+
+.review-details{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:1rem;
+
+    max-width:900px;
+
+    margin:4rem auto;
+
+}
+
+.detail-box{
+
+    background:linear-gradient(
+        180deg,
+        rgba(255,255,255,.03),
+        rgba(255,255,255,.01)
+    );
+
+    border:1px solid rgba(212,175,55,.08);
+
+    border-radius:var(--radius);
+
+    padding:1.75rem;
+
+    text-align:center;
+
+}
+
+.detail-box strong{
+
+    display:block;
+
+    margin-top:.5rem;
+
+    font-size:1.1rem;
+
+}
+
+.detail-label{
+
+    color:var(--gold);
+
+    text-transform:uppercase;
+
+    letter-spacing:2px;
+
+    font-size:.75rem;
+
+}
+
+/* ==========================================
+   IMAGE STYLING
+========================================== */
+
+.review-image,
+.article-image img {
+
+    box-shadow: 0 20px 55px rgba(0,0,0,.30);
+
+    border-radius: var(--radius);
+
+}

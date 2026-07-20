@@ -1,0 +1,50 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import ReviewCard from "../components/ReviewCard.astro";
+---
+
+<MainLayout title="Restaurants | Dining Unhinged">
+
+<section>
+
+  <h1>Restaurants</h1>
+
+  <p class="featured-summary">
+    Every restaurant we've reviewed. No paid rankings. No sponsored placements.
+    Just honest opinions and memorable meals.
+  </p>
+
+  <div class="restaurant-grid">
+
+    <ReviewCard
+      title="Pip"
+      rating={5}
+      category="Brunch"
+      excerpt="I went into Pip looking for a calm reset after a first date that very clearly did not believe in pacing."
+      image="/images/pip.jpg"
+      url="/restaurants/pip"
+    />
+
+    <ReviewCard
+      title="Bodega Ellerslie"
+      rating={5}
+      category="Spanish Tapas"
+      excerpt="A birthday dinner that turned into a guided tour of the menu, complete with exceptional cocktails, unforgettable tapas, and service that deserves every bit of the recognition."
+      image="/images/smoked-duck-mousse.jpg"
+      url="/restaurants/bodega-ellerslie"
+    />
+
+    <ReviewCard
+      title="Blowers & Grafton"
+      rating={5}
+      category="East Coast Pub Fare"
+      excerpt="An authentic Halifax donair, two raspberry mojitos, complimentary Irish cheesecake, and a birthday serenade that should probably have qualified as public humiliation."
+      image="/images/og-halifax-donair.jpg"
+      url="/restaurants/blowers-and-grafton"
+    />
+
+  </div>
+
+</section>
+
+</MainLayout>
