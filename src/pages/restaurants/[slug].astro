@@ -1,7 +1,7 @@
-import { urlFor } from "../../lib/image";
 ---
 import MainLayout from "../../layouts/MainLayout.astro";
 import { client } from "../../lib/sanity";
+import { urlFor } from "../../lib/image";
 
 export async function getStaticPaths() {
   const reviews = await client.fetch(`
@@ -39,7 +39,7 @@ const review = await client.fetch(
 );
 
 if (!review) {
-  return Astro.redirect("/404");
+  throw new Error(`Restaurant review not found: ${slug}`);
 }
 ---
 
@@ -69,10 +69,10 @@ if (!review) {
 
   <section class="article-image">
 
-  <img
-    src={urlFor(review.heroImage).width(1600).url()}
-    alt={review.title}
-  />
+    <img
+      src={urlFor(review.heroImage).width(1600).url()}
+      alt={review.title}
+    />
 
   </section>
 
