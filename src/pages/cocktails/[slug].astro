@@ -5,26 +5,27 @@ import { urlFor } from "../../lib/image";
 import { PortableText } from "astro-portabletext";
 
 export async function getStaticPaths() {
-  const reviews = await client.fetch(`
-    *[_type == "restaurantReview"]{
+  const cocktails = await client.fetch(`
+    *[_type == "cocktailReview"]{
       "slug": slug.current
     }
   `);
 
-  return reviews.map((review: { slug: string }) => ({
+  return cocktails.map((cocktail: { slug: string }) => ({
     params: {
-      slug: review.slug,
+      slug: cocktail.slug,
     },
   }));
 }
 
 const { slug } = Astro.params;
 
-const review = await client.fetch(
+const cocktail = await client.fetch(
   `
-  *[_type == "restaurantReview" && slug.current == $slug][0]{
+  *[_type == "cocktailReview" && slug.current == $slug][0]{
     title,
-    deck,
+    storyHook,
+    spirit,
     rating,
     publishedDate,
     heroImage,
@@ -32,39 +33,38 @@ const review = await client.fetch(
     venue->{
       name,
       city,
-      province,
-      cuisine
+      province
     }
   }
   `,
   { slug }
 );
 
-if (!review) {
-  throw new Error(`Restaurant review not found: ${slug}`);
+if (!cocktail) {
+  throw new Error(`Cocktail review not found: ${slug}`);
 }
 ---
 
-<MainLayout title={`${review.title} | Dining Unhinged`}>
+<MainLayout title={`${cocktail.title} | Dining Unhinged`}>
 
   <section class="article-hero">
 
-    <a href="/restaurants" class="back-link">
-      ← Back to Restaurants
+    <a href="/cocktails" class="back-link">
+      ← Back to Cocktails
     </a>
 
     <p class="article-category">
-      {review.venue.cuisine} • {review.venue.city}, {review.venue.province}
+      {cocktail.venue.name} • {cocktail.venue.city}, {cocktail.venue.province}
     </p>
 
-    <h1>{review.title}</h1>
+    <h1>{cocktail.title}</h1>
 
     <div class="article-stars">
-      {"★".repeat(review.rating)}
+      {"★".repeat(cocktail.rating ?? 5)}
     </div>
 
     <p class="article-deck">
-      {review.deck}
+      {cocktail.storyHook}
     </p>
 
   </section>
@@ -72,8 +72,8 @@ if (!review) {
   <section class="article-image">
 
     <img
-      src={urlFor(review.heroImage).width(1600).url()}
-      alt={review.title}
+      src={urlFor(cocktail.heroImage).width(1600).url()}
+      alt={cocktail.title}
     />
 
   </section>
@@ -82,28 +82,30 @@ if (!review) {
 
     <div class="detail-box">
       <span class="detail-label">Venue</span>
-      <strong>{review.venue.name}</strong>
+      <strong>{cocktail.venue.name}</strong>
     </div>
 
     <div class="detail-box">
       <span class="detail-label">Location</span>
-      <strong>{review.venue.city}, {review.venue.province}</strong>
+      <strong>{cocktail.venue.city}, {cocktail.venue.province}</strong>
     </div>
 
     <div class="detail-box">
-      <span class="detail-label">Cuisine</span>
-      <strong>{review.venue.cuisine}</strong>
+      <span class="detail-label">Primary Spirit</span>
+      <strong>{cocktail.spirit}</strong>
     </div>
 
     <div class="detail-box">
       <span class="detail-label">Published</span>
-      <strong>{review.publishedDate}</strong>
+      <strong>{cocktail.publishedDate}</strong>
     </div>
 
   </section>
 
   <section class="article-body">
-    <PortableText value={review.body} />
+
+    <PortableText value={cocktail.body} />
+
   </section>
 
 </MainLayout>
