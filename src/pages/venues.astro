@@ -18,15 +18,16 @@ const reviews = await client.fetch(`
 `);
 ---
 
-<MainLayout title="Restaurants | Dining Unhinged">
+<MainLayout title="Venues | Dining Unhinged">
 
   <section>
 
-    <h1>Restaurants</h1>
+    <h1>Venues</h1>
 
     <p class="featured-summary">
-      Every restaurant we've reviewed. No paid rankings. No sponsored placements.
-      Just honest opinions and memorable meals.
+      Every venue we've reviewed, from restaurants and breweries to wineries,
+      distilleries, cafés, and everything in between. No paid rankings. No
+      sponsored placements. Just honest opinions and memorable experiences.
     </p>
 
     <div class="restaurant-grid">
@@ -38,7 +39,7 @@ const reviews = await client.fetch(`
           category={review.venue?.cuisine ?? ""}
           excerpt={review.excerpt}
           image={urlFor(review.heroImage).width(800).url()}
-          url={`/restaurants/${review.slug}`}
+          url={`/venues/${review.slug}`}
         />
       ))}
 

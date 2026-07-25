@@ -1,0 +1,50 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import ReviewCard from "../components/ReviewCard.astro";
+import { client } from "../lib/sanity";
+import { urlFor } from "../lib/image";
+
+const drinks = await client.fetch(`
+  *[_type == "cocktailReview"] | order(publishedDate desc){
+    title,
+    rating,
+    storyHook,
+    heroImage,
+    "slug": slug.current,
+    venue->{
+      name,
+      city,
+      province
+    }
+  }
+`);
+---
+
+<MainLayout title="Drinks | Dining Unhinged">
+
+  <section>
+
+    <h1>Drinks</h1>
+
+    <p class="featured-summary">
+      Every drink we've reviewed, from expertly crafted cocktails and exceptional beer to memorable wine, spirits, coffee, and everything worth raising a glass to. No paid rankings. No sponsored placements. Just honest opinions and memorable pours.
+    </p>
+
+    <div class="restaurant-grid">
+
+      {drinks.map((drink: any) => (
+        <ReviewCard
+          title={drink.title}
+          rating={drink.rating ?? 5}
+          category={`${drink.venue?.name ?? ""} • ${drink.venue?.city ?? ""}, ${drink.venue?.province ?? ""}`}
+          excerpt={drink.storyHook}
+          image={urlFor(drink.heroImage).width(800).url()}
+          url={`/drinks/${drink.slug}`}
+        />
+      ))}
+
+    </div>
+
+  </section>
+
+</MainLayout>

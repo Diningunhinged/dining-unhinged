@@ -29,6 +29,7 @@ const review = await client.fetch(
     publishedDate,
     heroImage,
     body,
+    venueType,
     venue->{
       name,
       city,
@@ -41,7 +42,7 @@ const review = await client.fetch(
 );
 
 if (!review) {
-  throw new Error(`Restaurant review not found: ${slug}`);
+  throw new Error(`Venue review not found: ${slug}`);
 }
 ---
 
@@ -49,12 +50,12 @@ if (!review) {
 
   <section class="article-hero">
 
-    <a href="/restaurants" class="back-link">
-      ← Back to Restaurants
+    <a href="/venues" class="back-link">
+      ← Back to Venues
     </a>
 
     <p class="article-category">
-      {review.venue.cuisine} • {review.venue.city}, {review.venue.province}
+      {review.venueType?.toUpperCase()} • {review.venue.city}, {review.venue.province}
     </p>
 
     <h1>{review.title}</h1>

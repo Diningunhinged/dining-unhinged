@@ -5,26 +5,27 @@ import { urlFor } from "../../lib/image";
 import { PortableText } from "astro-portabletext";
 
 export async function getStaticPaths() {
-  const cocktails = await client.fetch(`
+  const drinks = await client.fetch(`
     *[_type == "cocktailReview"]{
       "slug": slug.current
     }
   `);
 
-  return cocktails.map((cocktail: { slug: string }) => ({
+  return drinks.map((drink: { slug: string }) => ({
     params: {
-      slug: cocktail.slug,
+      slug: drink.slug,
     },
   }));
 }
 
 const { slug } = Astro.params;
 
-const cocktail = await client.fetch(
+const drink = await client.fetch(
   `
   *[_type == "cocktailReview" && slug.current == $slug][0]{
     title,
     storyHook,
+    drinkType,
     spirit,
     rating,
     publishedDate,
@@ -40,31 +41,31 @@ const cocktail = await client.fetch(
   { slug }
 );
 
-if (!cocktail) {
-  throw new Error(`Cocktail review not found: ${slug}`);
+if (!drink) {
+  throw new Error(`Drink review not found: ${slug}`);
 }
 ---
 
-<MainLayout title={`${cocktail.title} | Dining Unhinged`}>
+<MainLayout title={`${drink.title} | Dining Unhinged`}>
 
   <section class="article-hero">
 
-    <a href="/cocktails" class="back-link">
-      ← Back to Cocktails
+    <a href="/drinks" class="back-link">
+      ← Back to Drinks
     </a>
 
     <p class="article-category">
-      {cocktail.venue.name} • {cocktail.venue.city}, {cocktail.venue.province}
+      {drink.drinkType?.toUpperCase()} • {drink.venue.city}, {drink.venue.province}
     </p>
 
-    <h1>{cocktail.title}</h1>
+    <h1>{drink.title}</h1>
 
     <div class="article-stars">
-      {"★".repeat(cocktail.rating ?? 5)}
+      {"★".repeat(drink.rating ?? 5)}
     </div>
 
     <p class="article-deck">
-      {cocktail.storyHook}
+      {drink.storyHook}
     </p>
 
   </section>
@@ -72,8 +73,8 @@ if (!cocktail) {
   <section class="article-image">
 
     <img
-      src={urlFor(cocktail.heroImage).width(1600).url()}
-      alt={cocktail.title}
+      src={urlFor(drink.heroImage).width(1600).url()}
+      alt={drink.title}
     />
 
   </section>
@@ -82,29 +83,29 @@ if (!cocktail) {
 
     <div class="detail-box">
       <span class="detail-label">Venue</span>
-      <strong>{cocktail.venue.name}</strong>
+      <strong>{drink.venue.name}</strong>
     </div>
 
     <div class="detail-box">
       <span class="detail-label">Location</span>
-      <strong>{cocktail.venue.city}, {cocktail.venue.province}</strong>
+      <strong>{drink.venue.city}, {drink.venue.province}</strong>
     </div>
 
     <div class="detail-box">
       <span class="detail-label">Primary Spirit</span>
-      <strong>{cocktail.spirit}</strong>
+      <strong>{drink.spirit}</strong>
     </div>
 
     <div class="detail-box">
       <span class="detail-label">Published</span>
-      <strong>{cocktail.publishedDate}</strong>
+      <strong>{drink.publishedDate}</strong>
     </div>
 
   </section>
 
   <section class="article-body">
 
-    <PortableText value={cocktail.body} />
+    <PortableText value={drink.body} />
 
   </section>
 
