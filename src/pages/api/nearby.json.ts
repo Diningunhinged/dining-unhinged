@@ -4,60 +4,112 @@ import { urlFor } from "../../lib/image";
 
 export const GET: APIRoute = async () => {
 
-  const reviews = await client.fetch(`
-    *[_type == "restaurantReview"]{
-
+  const data = await client.fetch(`
+  {
+    "venues": *[_type == "restaurantReview"]{
       title,
-
       rating,
-
       "slug": slug.current,
+      heroImage,
+      venueType,
 
+      venue->{
+        name,
+        city,
+        province,
+        cuisine,
+        featured,
+        googleMaps,
+        location
+      }
+    },
+
+    "drinks": *[_type == "cocktailReview"]{
+      title,
+      rating,
+      "slug": slug.current,
+      drinkType,
       heroImage,
 
       venue->{
-
         name,
-
         city,
-
         province,
-
         cuisine,
-
         featured,
-
         googleMaps,
-
         location
+      }
+    }
+  }
+  `);
+
+  const venueResults = data.venues
+    .filter((r:any)=>r.venue?.location)
+    .map((r:any)=>({
+
+      type:"venue",
+
+      category:r.venueType,
+
+      title:r.title,
+
+      slug:r.slug,
+
+      rating:r.rating,
+
+      heroImage:r.heroImage
+        ? urlFor(r.heroImage).width(700).url()
+        : null,
+
+      venue:r.venue
+
+    }));
+
+  const drinkResults = data.drinks
+    .filter((r:any)=>r.venue?.location)
+    .map((r:any)=>({
+
+      type:"drink",
+
+      category:r.drinkType,
+
+      title:r.title,
+
+      slug:r.slug,
+
+      rating:r.rating,
+
+      heroImage:r.heroImage
+        ? urlFor(r.heroImage).width(700).url()
+        : null,
+
+      venue:r.venue
+
+    }));
+
+  const results = [
+
+    ...venueResults,
+
+    ...drinkResults
+
+  ];
+
+  return new Response(
+
+    JSON.stringify(results),
+
+    {
+
+      headers:{
+
+        "Content-Type":"application/json"
 
       }
 
     }
-  `);
 
-  const results = reviews
-    .filter((review: any) => review.venue?.location)
-    .map((review: any) => ({
-
-      title: review.title,
-
-      slug: review.slug,
-
-      rating: review.rating,
-
-      heroImage: review.heroImage
-        ? urlFor(review.heroImage).width(600).url()
-        : null,
-
-      venue: review.venue,
-
-    }));
-
-  return new Response(JSON.stringify(results), {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  );
 
 };

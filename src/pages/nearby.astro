@@ -4,7 +4,7 @@ import MainLayout from "../layouts/MainLayout.astro";
 
 <MainLayout
   title="Questionable Decisions Nearby | Dining Unhinged"
-  description="Find Dining Unhinged reviews closest to your location."
+  description="Discover nearby Dining Unhinged venue and drink reviews."
 >
 
 <section class="nearby-hero">
@@ -18,8 +18,9 @@ import MainLayout from "../layouts/MainLayout.astro";
     <h1>Questionable Decisions Nearby</h1>
 
     <p class="lead">
-      Exceptional food is probably closer than you think.
-      Let Dining Unhinged point you toward your next questionable decision.
+      Your next questionable decision is probably closer than you think.
+      Whether it's dinner, a cocktail, or somewhere worth lingering,
+      Dining Unhinged will help you find it.
     </p>
 
     <button
@@ -34,7 +35,69 @@ import MainLayout from "../layouts/MainLayout.astro";
       class="nearby-status"
     >
       We'll only use your location to find nearby Dining Unhinged reviews.
-    </p>
+        </p>
+
+  </div>
+
+</section>
+
+<section
+  class="nearby-filter"
+  id="nearby-filter"
+  hidden
+>
+
+  <div class="container">
+
+    <div class="nearby-search-bar">
+
+      <div class="search-box">
+
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="M20 20l-3.5-3.5"></path>
+        </svg>
+
+        <input
+          id="nearby-search"
+          type="text"
+          placeholder=""
+        >
+
+      </div>
+
+      <div class="segmented-control">
+
+        <button
+          class="segment active"
+          data-filter="all"
+        >
+          All
+        </button>
+
+        <button
+          class="segment"
+          data-filter="venue"
+        >
+          Places
+        </button>
+
+        <button
+          class="segment"
+          data-filter="drink"
+        >
+          Drinks
+        </button>
+
+      </div>
+
+    </div>
 
   </div>
 
@@ -55,7 +118,7 @@ import MainLayout from "../layouts/MainLayout.astro";
 
         <p>
           Press the button above and we'll start looking for
-          questionable decisions in your area.
+          questionable decisions nearby.
         </p>
 
       </div>
@@ -86,13 +149,59 @@ function distanceKm(lat1, lon1, lat2, lon2) {
 
 }
 
+const icons = {
+
+    Restaurant: "🍽",
+    Brewery: "🍺",
+    Winery: "🍷",
+    Distillery: "🥃",
+    "Cocktail Bar": "🍸",
+    Pub: "🍺",
+    Lounge: "🥂",
+    Café: "☕",
+    Bakery: "🥐",
+    Market: "🛒",
+
+    Cocktail: "🍸",
+    Beer: "🍺",
+    Wine: "🍷",
+    Whisky: "🥃",
+    Spirit: "🥃",
+    Coffee: "☕",
+    Tea: "🫖",
+    Mocktail: "🍹",
+    "Zero-Proof": "🥤",
+    Flight: "🛫",
+    "Seasonal Feature": "⭐"
+
+};
+
 const button = document.querySelector("#find-nearby");
 const status = document.querySelector("#nearby-status");
 const results = document.querySelector("#results");
+const filter = document.querySelector("#nearby-filter");
+const searchInput = document.querySelector("#nearby-search");
+
+const placeholders = [
+    "Search Your Soul...",
+    "Search Your Standards...",
+    "Search Your Regrets...",
+    "Search Your Wallet...",
+    "Search For Better Decisions...",
+    "Search For Trouble...",
+    "Search Your Last Paycheque...",
+    "Search For Tomorrow's Hangover...",
+    "Search Responsibly... or Don't."
+];
+
+searchInput.placeholder =
+    placeholders[Math.floor(Math.random() * placeholders.length)];
 
 button.addEventListener("click", async () => {
 
     results.innerHTML = "";
+
+    filter.hidden = true;
 
     if (!navigator.geolocation) {
 
@@ -103,7 +212,19 @@ button.addEventListener("click", async () => {
 
     }
 
-    status.textContent = "Looking for poor decisions...";
+    status.innerHTML = `
+        <div class="nearby-loading">
+
+            <div class="loading-spinner"></div>
+
+            <span>
+
+                Looking for poor decisions...
+
+            </span>
+
+        </div>
+    `;
 
     navigator.geolocation.getCurrentPosition(
 
@@ -115,84 +236,162 @@ button.addEventListener("click", async () => {
                 const lng = position.coords.longitude;
 
                 const response = await fetch("/api/nearby.json");
-                const venues = await response.json();
 
-                venues.forEach(v => {
+                const items = await response.json();
 
-                    v.distance = distanceKm(
+                items.forEach(item => {
+
+                    item.distance = distanceKm(
                         lat,
                         lng,
-                        v.venue.location.lat,
-                        v.venue.location.lng
+                        item.venue.location.lat,
+                        item.venue.location.lng
                     );
 
                 });
 
-                venues.sort((a, b) => a.distance - b.distance);
+                items.sort((a, b) => a.distance - b.distance);
 
                 status.textContent =
-                    `${venues.length} questionable decision${venues.length === 1 ? "" : "s"} found nearby.`;
+    `${items.length} questionable decision${items.length === 1 ? "" : "s"} within striking distance.`;
 
-                if (venues.length === 0) {
+if (items.length > 0) {
+
+    filter.hidden = false;
+
+}
+
+                if (items.length === 0) {
 
                     results.innerHTML = `
+
                         <div class="empty-state">
-                            <h2>Apparently you're surrounded by restraint.</h2>
+
+                            <h2>
+
+                                Apparently you're surrounded by restraint.
+
+                            </h2>
+
                             <p>
-                                Dining Unhinged hasn't reviewed anywhere near your location... yet.
+
+                                Dining Unhinged hasn't reviewed anything nearby...
+                                yet.
+
                             </p>
+
                         </div>
+
                     `;
 
                     return;
 
                 }
 
-                venues.forEach(v => {
+                items.forEach(item => {
 
-                    const card = document.createElement("article");
+                    const icon =
+                        icons[item.category] ||
+                        (item.type === "drink" ? "🍸" : "🍽");
 
-                    card.className = "nearby-card";
+                    const card =
+    document.createElement("article");
+
+card.className = "nearby-card";
+
+card.dataset.type = item.type;
+
+card.dataset.search = [
+
+    item.title,
+
+    item.venue.name,
+
+    item.venue.city,
+
+    item.venue.province,
+
+    item.category,
+
+    item.venue.cuisine ?? ""
+
+].join(" ").toLowerCase();
 
                     card.innerHTML = `
+                    <img
+    src="${item.heroImage ?? "/images/placeholder.jpg"}"
+    alt="${item.title}"
+>
 
-                        <img
-                            src="${v.heroImage}"
-                            alt="${v.title}"
-                        >
+<div class="nearby-content">
 
-                        <div class="nearby-content">
+    <div class="nearby-type">
 
-                            <div class="nearby-stars">
-                                ${"★".repeat(v.rating)}
-                            </div>
+        ${icon}
 
-                            <h2>
-                                ${v.title}
-                            </h2>
+        ${(item.category || item.type).toUpperCase()}
 
-                            <p class="nearby-cuisine">
-                                ${v.venue.cuisine}
-                            </p>
+    </div>
 
-                            <p class="nearby-location">
-                                ${v.venue.city}, ${v.venue.province}
-                            </p>
+    <div class="nearby-stars">
 
-                            <p class="nearby-distance">
-                                📍 ${v.distance.toFixed(1)} km away
-                            </p>
+        ${"★".repeat(item.rating || 0)}
 
-                            <a
-                                href="/venues/${v.slug}"
-                                class="hero-button"
-                            >
-                                Read Review →
-                            </a>
+    </div>
 
-                        </div>
+    <h2>
 
-                    `;
+        ${item.title}
+
+    </h2>
+
+    <p class="nearby-venue">
+
+        ${item.venue.name}
+
+    </p>
+
+    <p class="nearby-location">
+
+        ${item.venue.city}, ${item.venue.province}
+
+    </p>
+
+    <p class="nearby-distance">
+
+        📍 ${item.distance.toFixed(1)} km away
+
+    </p>
+
+    <div class="nearby-actions">
+
+        <a
+            href="/${item.type === "drink" ? "drinks" : "venues"}/${item.slug}"
+            class="hero-button"
+        >
+            Read the Review →
+        </a>
+
+        ${
+            item.venue.googleMaps
+                ? `
+                <a
+                    href="${item.venue.googleMaps}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="secondary-button"
+                >
+                    Open in Maps
+                </a>
+                `
+                : ""
+        }
+
+    </div>
+
+</div>
+
+`;
 
                     results.appendChild(card);
 
@@ -205,21 +404,117 @@ button.addEventListener("click", async () => {
                 status.textContent =
                     "Something went wrong while looking for poor decisions.";
 
+                results.innerHTML = `
+
+                    <div class="empty-state">
+
+                        <h2>
+
+                            Well... that was unfortunate.
+
+                        </h2>
+
+                        <p>
+
+                            Dining Unhinged ran into an unexpected issue while
+                            searching for nearby reviews.
+
+                            Please try again in a moment.
+
+                        </p>
+
+                    </div>
+
+                `;
+
             }
 
         },
-
-        () => {
+                () => {
 
             status.textContent =
-                "Location permission denied. We'll need your location to find nearby reviews.";
+                "We can't point you toward poor decisions if we don't know roughly where you are.";
+
+            results.innerHTML = `
+
+                <div class="empty-state">
+
+                    <h2>
+
+                        Location Needed
+
+                    </h2>
+
+                    <p>
+
+                        Enable location services and we'll find the closest
+                        Dining Unhinged recommendations around you.
+
+                    </p>
+
+                </div>
+
+            `;
 
         }
 
     );
 
 });
+function filterResults() {
+
+    const activeFilter =
+        document.querySelector(".segment.active")?.dataset.filter ?? "all";
+
+    const search =
+        searchInput.value.trim().toLowerCase();
+
+    document.querySelectorAll(".nearby-card").forEach(card => {
+
+        const type = card.dataset.type;
+
+        const text = card.dataset.search;
+
+        const matchesFilter =
+            activeFilter === "all" ||
+            activeFilter === type;
+
+        const matchesSearch =
+            text.includes(search);
+
+        card.style.display =
+            matchesFilter && matchesSearch
+                ? ""
+                : "none";
+
+    });
+
+}
+const filterButtons = document.querySelectorAll(".segment");
+
+filterButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        filterButtons.forEach(btn =>
+            btn.classList.remove("active")
+        );
+
+        button.classList.add("active");
+
+        filterResults();
+
+    });
+
+});
+
+searchInput.addEventListener("input", () => {
+
+    filterResults();
+
+});
 
 </script>
 
 </MainLayout>
+                    
