@@ -3,6 +3,7 @@ import MainLayout from "../../layouts/MainLayout.astro";
 import { client } from "../../lib/sanity";
 import { urlFor } from "../../lib/image";
 import { PortableText } from "astro-portabletext";
+import Disclosure from "../../components/Disclosure.astro";
 
 export async function getStaticPaths() {
   const reviews = await client.fetch(`
@@ -29,6 +30,8 @@ const review = await client.fetch(
     publishedDate,
     heroImage,
     body,
+    hosted,
+    disclosure,
     venueType,
     venue->{
       name,
@@ -69,6 +72,11 @@ if (!review) {
     </p>
 
   </section>
+
+  <Disclosure
+    hosted={review.hosted}
+    disclosure={review.disclosure}
+  />
 
   <section class="article-image">
 

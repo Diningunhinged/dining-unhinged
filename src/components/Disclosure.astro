@@ -1,0 +1,50 @@
+---
+interface Props {
+  hosted?: boolean;
+  disclosure?: string;
+}
+
+const {
+  hosted = false,
+  disclosure
+} = Astro.props;
+---
+
+<div class={`review-disclosure ${hosted ? "hosted" : "independent"}`}>
+
+  <div class="disclosure-header">
+
+    <span class="disclosure-badge">
+      {hosted ? "Hosted Visit" : "Independent Visit"}
+    </span>
+
+  </div>
+
+  {
+    disclosure ? (
+
+      <p>{disclosure}</p>
+
+    ) : hosted ? (
+
+      <p>
+        This experience was provided by the venue. Dining Unhinged maintains
+        complete editorial independence. Ratings and opinions are never
+        influenced by hosted visits.
+      </p>
+
+    ) : (
+
+      <p>
+        Dining Unhinged paid for this experience. No compensation was received.
+        Every opinion expressed reflects my genuine experience.
+      </p>
+
+    )
+  }
+
+  <a href="/house-rules">
+    Read the House Rules →
+  </a>
+
+</div>

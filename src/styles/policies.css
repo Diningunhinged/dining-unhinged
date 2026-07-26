@@ -1,0 +1,164 @@
+/* ==========================================
+   HOUSE RULES / POLICIES
+========================================== */
+
+.page-header {
+    padding: 5rem 0 2rem;
+    text-align: center;
+}
+
+.page-header h1,
+.policy-page .page-header h1 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+}
+
+.page-header .lead {
+    max-width: 720px;
+    margin: 0 auto;
+    color: var(--smoke);
+    font-size: 1.15rem;
+    line-height: 1.8;
+}
+
+/* ==========================================
+   POLICY LAYOUT
+========================================== */
+
+.policy {
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 5rem;
+}
+
+.policy article {
+    margin-bottom: 4rem;
+}
+
+.policy article:last-child {
+    margin-bottom: 0;
+}
+
+/* ==========================================
+   HEADINGS
+========================================== */
+
+.policy h2 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--gold);
+    margin-bottom: 1rem;
+}
+
+.policy h3 {
+    color: var(--cream);
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 2rem 0 0.75rem;
+}
+
+/* ==========================================
+   BODY
+========================================== */
+
+.policy p {
+    margin-bottom: 1rem;
+    line-height: 1.9;
+    color: var(--smoke);
+}
+
+.policy ul {
+    margin: 1.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.policy li {
+    margin-bottom: 0.6rem;
+    line-height: 1.8;
+    color: var(--smoke);
+}
+
+/* ==========================================
+   PULL QUOTE
+========================================== */
+
+.policy blockquote {
+    background: none;
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    margin: 3rem 0;
+    padding: 2rem 0;
+
+    text-align: center;
+
+    font-family: "Cormorant Garamond", serif;
+    font-size: 2.2rem;
+    font-weight: 600;
+    line-height: 1.15;
+    font-style: normal;
+
+    color: var(--gold);
+}
+
+/* ==========================================
+   LINKS
+========================================== */
+
+.policy a {
+    color: var(--gold);
+    text-decoration: none;
+    transition: color .25s ease;
+}
+
+.policy a:hover {
+    color: var(--cream);
+}
+
+/* ==========================================
+   DIVIDERS
+========================================== */
+
+.policy hr {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    margin: 2rem 0;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 768px) {
+
+    .page-header {
+        padding: 4rem 0 2rem;
+    }
+
+    .policy {
+        padding: 3rem 1rem 4rem;
+    }
+
+    .policy h2 {
+        font-size: 2rem;
+    }
+
+    .policy h3 {
+        font-size: 1.2rem;
+    }
+
+    .policy blockquote {
+        font-size: 1.75rem;
+        padding: 1.5rem 0;
+    }
+
+}

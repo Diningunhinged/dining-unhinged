@@ -1,0 +1,225 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+---
+
+<MainLayout
+  title="Questionable Decisions Nearby | Dining Unhinged"
+  description="Find Dining Unhinged reviews closest to your location."
+>
+
+<section class="nearby-hero">
+
+  <div class="container">
+
+    <p class="eyebrow">
+      NEW FEATURE
+    </p>
+
+    <h1>Questionable Decisions Nearby</h1>
+
+    <p class="lead">
+      Exceptional food is probably closer than you think.
+      Let Dining Unhinged point you toward your next questionable decision.
+    </p>
+
+    <button
+      id="find-nearby"
+      class="hero-button"
+    >
+      Find My Next Mistake
+    </button>
+
+    <p
+      id="nearby-status"
+      class="nearby-status"
+    >
+      We'll only use your location to find nearby Dining Unhinged reviews.
+    </p>
+
+  </div>
+
+</section>
+
+<section class="nearby-results">
+
+  <div class="container">
+
+    <div
+      id="results"
+      class="nearby-grid"
+    >
+
+      <div class="empty-state">
+
+        <h2>Ready when you are.</h2>
+
+        <p>
+          Press the button above and we'll start looking for
+          questionable decisions in your area.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<script type="module">
+
+function distanceKm(lat1, lon1, lat2, lon2) {
+
+    const R = 6371;
+
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+
+    const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) *
+        Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+
+    return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+
+}
+
+const button = document.querySelector("#find-nearby");
+const status = document.querySelector("#nearby-status");
+const results = document.querySelector("#results");
+
+button.addEventListener("click", async () => {
+
+    results.innerHTML = "";
+
+    if (!navigator.geolocation) {
+
+        status.textContent =
+            "Apparently your browser doesn't believe in questionable decisions.";
+
+        return;
+
+    }
+
+    status.textContent = "Looking for poor decisions...";
+
+    navigator.geolocation.getCurrentPosition(
+
+        async (position) => {
+
+            try {
+
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+
+                const response = await fetch("/api/nearby.json");
+                const venues = await response.json();
+
+                venues.forEach(v => {
+
+                    v.distance = distanceKm(
+                        lat,
+                        lng,
+                        v.venue.location.lat,
+                        v.venue.location.lng
+                    );
+
+                });
+
+                venues.sort((a, b) => a.distance - b.distance);
+
+                status.textContent =
+                    `${venues.length} questionable decision${venues.length === 1 ? "" : "s"} found nearby.`;
+
+                if (venues.length === 0) {
+
+                    results.innerHTML = `
+                        <div class="empty-state">
+                            <h2>Apparently you're surrounded by restraint.</h2>
+                            <p>
+                                Dining Unhinged hasn't reviewed anywhere near your location... yet.
+                            </p>
+                        </div>
+                    `;
+
+                    return;
+
+                }
+
+                venues.forEach(v => {
+
+                    const card = document.createElement("article");
+
+                    card.className = "nearby-card";
+
+                    card.innerHTML = `
+
+                        <img
+                            src="${v.heroImage}"
+                            alt="${v.title}"
+                        >
+
+                        <div class="nearby-content">
+
+                            <div class="nearby-stars">
+                                ${"★".repeat(v.rating)}
+                            </div>
+
+                            <h2>
+                                ${v.title}
+                            </h2>
+
+                            <p class="nearby-cuisine">
+                                ${v.venue.cuisine}
+                            </p>
+
+                            <p class="nearby-location">
+                                ${v.venue.city}, ${v.venue.province}
+                            </p>
+
+                            <p class="nearby-distance">
+                                📍 ${v.distance.toFixed(1)} km away
+                            </p>
+
+                            <a
+                                href="/venues/${v.slug}"
+                                class="hero-button"
+                            >
+                                Read Review →
+                            </a>
+
+                        </div>
+
+                    `;
+
+                    results.appendChild(card);
+
+                });
+
+            } catch (error) {
+
+                console.error(error);
+
+                status.textContent =
+                    "Something went wrong while looking for poor decisions.";
+
+            }
+
+        },
+
+        () => {
+
+            status.textContent =
+                "Location permission denied. We'll need your location to find nearby reviews.";
+
+        }
+
+    );
+
+});
+
+</script>
+
+</MainLayout>

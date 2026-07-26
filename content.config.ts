@@ -3,8 +3,11 @@ import { defineCollection, z } from "astro:content";
 const reviews = defineCollection({
   schema: z.object({
     title: z.string(),
+
     restaurant: z.string(),
+
     city: z.string(),
+
     province: z.string(),
 
     rating: z.number(),
@@ -22,6 +25,10 @@ const reviews = defineCollection({
     cuisine: z.string(),
 
     cocktails: z.boolean().default(false),
+
+    hosted: z.boolean().default(false),
+
+    disclosure: z.string().optional(),
   }),
 });
 
