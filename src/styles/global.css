@@ -48,7 +48,11 @@
 
 .nearby-feature h2 {
 
+    color: var(--gold);
+
     margin-bottom: 1.5rem;
+
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
 
 }
 
