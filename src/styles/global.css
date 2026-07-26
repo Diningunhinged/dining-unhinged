@@ -14,3 +14,81 @@
 @import "./responsive.css";
 @import "./nearby.css";
 @import "./questionable-decisions.css";
+/* ==========================================
+   HOMEPAGE NEARBY FEATURE
+========================================== */
+
+.nearby-feature {
+
+    padding: 6rem 0;
+
+    text-align: center;
+
+}
+
+.nearby-feature .container {
+
+    max-width: 900px;
+
+}
+
+.nearby-feature-label {
+
+    color: var(--gold);
+
+    text-transform: uppercase;
+
+    letter-spacing: .2em;
+
+    font-size: .8rem;
+
+    margin-bottom: 1rem;
+
+}
+
+.nearby-feature h2 {
+
+    margin-bottom: 1.5rem;
+
+}
+
+.nearby-feature-text {
+
+    max-width: 700px;
+
+    margin: 0 auto 2rem;
+
+    color: var(--smoke);
+
+    font-size: 1.15rem;
+
+    line-height: 1.8;
+
+}
+
+.nearby-feature-points {
+
+    display: flex;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 2rem;
+
+    margin-bottom: 2.5rem;
+
+    color: var(--cream);
+
+    font-weight: 600;
+
+}
+/* ==========================================
+   FEATURED STORY SPACING
+========================================== */
+
+.featured-story {
+
+    margin-bottom: 8rem;
+
+}
