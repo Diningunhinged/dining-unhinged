@@ -1,0 +1,98 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import RepeatOffenderCard from "../components/RepeatOffenderCard.astro";
+import { client } from "../lib/sanity";
+
+const repeatOffenders = await client.fetch(`
+*[_type == "repeatOffender"][0]{
+
+  futureCamProblem->{
+    _type,
+    title,
+    slug,
+    excerpt,
+    heroImage
+  },
+
+  liquidCourageLaureate->{
+    _type,
+    title,
+    slug,
+    excerpt,
+    heroImage
+  },
+
+  emptyTank->{
+    _type,
+    title,
+    slug,
+    excerpt,
+    heroImage
+  },
+
+  pleasantHumans->{
+    _type,
+    title,
+    slug,
+    excerpt,
+    heroImage
+  },
+
+  didntHappen->{
+    _type,
+    title,
+    slug,
+    excerpt,
+    heroImage
+  }
+
+}
+`);
+---
+
+<MainLayout title="The Repeat Offenders | Dining Unhinged">
+
+  <section class="article-hero">
+
+    <p class="article-category">
+      DINING UNHINGED
+    </p>
+
+    <h1>The Repeat Offenders</h1>
+
+    <p class="article-deck">
+      The places we'd happily return to, despite every promise to try somewhere new.
+    </p>
+
+  </section>
+
+  <section class="restaurant-grid">
+
+    <RepeatOffenderCard
+      category="FUTURE CAM'S PROBLEM"
+      review={repeatOffenders.futureCamProblem}
+    />
+
+    <RepeatOffenderCard
+      category="LIQUID COURAGE LAUREATE"
+      review={repeatOffenders.liquidCourageLaureate}
+    />
+
+    <RepeatOffenderCard
+      category="THE EMPTY TANK"
+      review={repeatOffenders.emptyTank}
+    />
+
+    <RepeatOffenderCard
+      category="UNREASONABLY PLEASANT HUMANS"
+      review={repeatOffenders.pleasantHumans}
+    />
+
+    <RepeatOffenderCard
+      category="IF I DON'T LOG IT, IT DIDN'T HAPPEN"
+      review={repeatOffenders.didntHappen}
+    />
+
+  </section>
+
+</MainLayout>

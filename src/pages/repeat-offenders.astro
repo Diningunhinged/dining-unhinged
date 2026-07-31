@@ -1,5 +1,61 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
+import { client } from "../lib/sanity";
+import { urlFor } from "../lib/image";
+
+const repeatOffenders = await client.fetch(`
+*[_type == "repeatOffender"][0]{
+
+  futureCamProblem->{
+    _type,
+    title,
+    slug,
+    excerpt,
+    heroImage
+  },
+
+  liquidCourageLaureate->{
+    _type,
+    title,
+    slug,
+    excerpt,
+    heroImage
+  },
+
+  emptyTank->{
+    _type,
+    title,
+    slug,
+    excerpt,
+    heroImage
+  },
+
+  pleasantHumans->{
+    _type,
+    title,
+    slug,
+    excerpt,
+    heroImage
+  },
+
+  didntHappen->{
+    _type,
+    title,
+    slug,
+    excerpt,
+    heroImage
+  }
+
+}
+`);
+
+const getLink = (review: any) => {
+  if (!review) return "#";
+
+  return review._type === "cocktailReview"
+    ? `/drinks/${review.slug.current}`
+    : `/venues/${review.slug.current}`;
+};
 ---
 
 <MainLayout title="The Repeat Offenders | Dining Unhinged">
@@ -20,160 +76,170 @@ import MainLayout from "../layouts/MainLayout.astro";
 
   <section class="restaurant-grid">
 
-    <article class="review-card">
+    {repeatOffenders.futureCamProblem && (
+      <article class="review-card">
 
-      <img
-        src="/images/og-halifax-donair.jpg"
-        alt="Blowers &amp; Grafton"
-        class="review-image"
-      />
+        <img
+          src={urlFor(repeatOffenders.futureCamProblem.heroImage).width(900).url()}
+          alt={repeatOffenders.futureCamProblem.title}
+          class="review-image"
+        />
 
-      <div class="review-body">
+        <div class="review-body">
 
-        <p class="review-category">
-          FUTURE CAM'S PROBLEM
-        </p>
+          <p class="review-category">
+            FUTURE CAM'S PROBLEM
+          </p>
 
-        <h3>Blowers &amp; Grafton</h3>
+          <h3>{repeatOffenders.futureCamProblem.title}</h3>
 
-        <p class="review-excerpt">
-          The kind of place that convinces Present Cam to ignore both his budget and his better judgment, leaving Future Cam to deal with the consequences. A sacrifice he's willing to make.
-        </p>
+          <p class="review-excerpt">
+            {repeatOffenders.futureCamProblem.excerpt}
+          </p>
 
-        <a
-          href="/venues/blowers-and-grafton"
-          class="read-story"
-        >
-          Read the Review →
-        </a>
+          <a
+            href={getLink(repeatOffenders.futureCamProblem)}
+            class="read-story"
+          >
+            Read the Review →
+          </a>
 
-      </div>
+        </div>
 
-    </article>
+      </article>
+    )}
 
-    <article class="review-card">
+    {repeatOffenders.liquidCourageLaureate && (
+      <article class="review-card">
 
-      <img
-        src="/images/spanish-old-fashioned.jpg"
-        alt="Spanish Old Fashioned"
-        class="review-image"
-      />
+        <img
+          src={urlFor(repeatOffenders.liquidCourageLaureate.heroImage).width(900).url()}
+          alt={repeatOffenders.liquidCourageLaureate.title}
+          class="review-image"
+        />
 
-      <div class="review-body">
+        <div class="review-body">
 
-        <p class="review-category">
-          LIQUID COURAGE LAUREATE
-        </p>
+          <p class="review-category">
+            LIQUID COURAGE LAUREATE
+          </p>
 
-        <h3>Spanish Old Fashioned</h3>
+          <h3>{repeatOffenders.liquidCourageLaureate.title}</h3>
 
-        <p class="review-excerpt">
-          Familiar enough to recognize, different enough to remember. A cocktail worthy of another round before good judgment has a chance to object.
-        </p>
+          <p class="review-excerpt">
+            {repeatOffenders.liquidCourageLaureate.excerpt}
+          </p>
 
-        <a
-          href="/drinks/spanish-old-fashioned"
-          class="read-story"
-        >
-          Read the Review →
-        </a>
+          <a
+            href={getLink(repeatOffenders.liquidCourageLaureate)}
+            class="read-story"
+          >
+            Read the Review →
+          </a>
 
-      </div>
+        </div>
 
-    </article>
+      </article>
+    )}
 
-    <article class="review-card">
+    {repeatOffenders.emptyTank && (
+      <article class="review-card">
 
-      <img
-        src="/images/pip.jpg"
-        alt="Pip"
-        class="review-image"
-      />
+        <img
+          src={urlFor(repeatOffenders.emptyTank.heroImage).width(900).url()}
+          alt={repeatOffenders.emptyTank.title}
+          class="review-image"
+        />
 
-      <div class="review-body">
+        <div class="review-body">
 
-        <p class="review-category">
-          THE EMPTY TANK
-        </p>
+          <p class="review-category">
+            THE EMPTY TANK
+          </p>
 
-        <h3>Pip</h3>
+          <h3>{repeatOffenders.emptyTank.title}</h3>
 
-        <p class="review-excerpt">
-          The kind of place that makes you forget how expensive fuel has become until you're halfway home.
-        </p>
+          <p class="review-excerpt">
+            {repeatOffenders.emptyTank.excerpt}
+          </p>
 
-        <a
-          href="/venues/pip"
-          class="read-story"
-        >
-          Read the Review →
-        </a>
+          <a
+            href={getLink(repeatOffenders.emptyTank)}
+            class="read-story"
+          >
+            Read the Review →
+          </a>
 
-      </div>
+        </div>
 
-    </article>
+      </article>
+    )}
 
-    <article class="review-card">
+    {repeatOffenders.pleasantHumans && (
+      <article class="review-card">
 
-      <img
-        src="/images/smoked-duck-mousse.jpg"
-        alt="Bodega Ellerslie"
-        class="review-image"
-      />
+        <img
+          src={urlFor(repeatOffenders.pleasantHumans.heroImage).width(900).url()}
+          alt={repeatOffenders.pleasantHumans.title}
+          class="review-image"
+        />
 
-      <div class="review-body">
+        <div class="review-body">
 
-        <p class="review-category">
-          UNREASONABLY PLEASANT HUMANS
-        </p>
+          <p class="review-category">
+            UNREASONABLY PLEASANT HUMANS
+          </p>
 
-        <h3>Bodega Ellerslie</h3>
+          <h3>{repeatOffenders.pleasantHumans.title}</h3>
 
-        <p class="review-excerpt">
-          Ruth somehow knew exactly what we'd enjoy before we did, timed every course perfectly, and made exceptional hospitality look effortless.
-        </p>
+          <p class="review-excerpt">
+            {repeatOffenders.pleasantHumans.excerpt}
+          </p>
 
-        <a
-          href="/venues/bodega-ellerslie"
-          class="read-story"
-        >
-          Read the Review →
-        </a>
+          <a
+            href={getLink(repeatOffenders.pleasantHumans)}
+            class="read-story"
+          >
+            Read the Review →
+          </a>
 
-      </div>
+        </div>
 
-    </article>
+      </article>
+    )}
 
-    <article class="review-card">
+    {repeatOffenders.didntHappen && (
+      <article class="review-card">
 
-      <img
-        src="/images/irish-cheesecake.jpg"
-        alt="Made-from-Scratch Irish Cheesecake"
-        class="review-image"
-      />
+        <img
+          src={urlFor(repeatOffenders.didntHappen.heroImage).width(900).url()}
+          alt={repeatOffenders.didntHappen.title}
+          class="review-image"
+        />
 
-      <div class="review-body">
+        <div class="review-body">
 
-        <p class="review-category">
-          IF I DON'T LOG IT, IT DIDN'T HAPPEN
-        </p>
+          <p class="review-category">
+            IF I DON'T LOG IT, IT DIDN'T HAPPEN
+          </p>
 
-        <h3>Made-from-Scratch Irish Cheesecake</h3>
+          <h3>{repeatOffenders.didntHappen.title}</h3>
 
-        <p class="review-excerpt">
-          Selective lactose intolerance was temporarily suspended while evidence was consumed. Future Cam can deal with the paperwork.
-        </p>
+          <p class="review-excerpt">
+            {repeatOffenders.didntHappen.excerpt}
+          </p>
 
-        <a
-          href="/venues/blowers-and-grafton"
-          class="read-story"
-        >
-          Read the Review →
-        </a>
+          <a
+            href={getLink(repeatOffenders.didntHappen)}
+            class="read-story"
+          >
+            Read the Review →
+          </a>
 
-      </div>
+        </div>
 
-    </article>
+      </article>
+    )}
 
   </section>
 
