@@ -1,10 +1,34 @@
+---
+import { client } from "../lib/sanity";
+import { urlFor } from "../lib/image";
+
+const review = await client.fetch(`
+  *[_type == "restaurantReview"]
+  | order(publishedDate desc)[0]{
+    title,
+    slug,
+    rating,
+    excerpt,
+    heroImage,
+    venue->{
+      name,
+      city,
+      province
+    }
+  }
+`);
+---
+
+{review && (
 <section id="featured-story" class="featured-story">
 
   <div class="featured-image">
-    <img
-      src="/images/og-halifax-donair.jpg"
-      alt="Blowers &amp; Grafton"
-    />
+    {review.heroImage && (
+      <img
+        src={urlFor(review.heroImage).width(1200).url()}
+        alt={review.title}
+      />
+    )}
   </div>
 
   <div class="featured-content">
@@ -13,22 +37,24 @@
       FEATURED REVIEW
     </p>
 
-    <h2>Blowers &amp; Grafton</h2>
+    <h2>{review.title}</h2>
 
-    <div class="featured-stars">
-      ★★★★★
-    </div>
-
-    <blockquote>
-      "There are two kinds of birthday dinners. This was the second kind."
-    </blockquote>
-
-    <p class="featured-summary">
-      An authentic Halifax donair, two raspberry mojitos, complimentary Irish cheesecake, and a birthday celebration that somehow escalated into a public rendition of Happy Birthday. Exactly as it should be.
+    <p class="featured-location">
+      {review.venue?.name} • {review.venue?.city}, {review.venue?.province}
     </p>
 
+    <div class="featured-stars">
+      {"★".repeat(review.rating ?? 0)}
+    </div>
+
+    {review.excerpt && (
+      <blockquote>
+        "{review.excerpt}"
+      </blockquote>
+    )}
+
     <a
-      href="/venues/blowers-and-grafton"
+      href={`/venues/${review.slug.current}`}
       class="hero-button"
     >
       Read the Review →
@@ -37,3 +63,4 @@
   </div>
 
 </section>
+)}
