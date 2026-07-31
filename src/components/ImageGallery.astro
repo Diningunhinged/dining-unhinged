@@ -1,0 +1,128 @@
+---
+import { urlFor } from "../lib/image";
+
+interface Props {
+  heroImage: any;
+  gallery?: any[];
+  title: string;
+}
+
+const {
+  heroImage,
+  gallery = [],
+  title,
+} = Astro.props;
+
+const images = [
+  ...(heroImage ? [heroImage] : []),
+  ...gallery,
+];
+---
+
+{images.length > 0 && (
+
+<div class="du-gallery">
+
+  <div class="du-gallery-track">
+
+    {images.map((image, index) => (
+
+      <div class="du-gallery-slide">
+
+        <img
+          src={urlFor(image)
+            .width(1600)
+            .quality(85)
+            .auto("format")
+            .url()}
+          alt={
+            index === 0
+              ? title
+              : `${title} ${index + 1}`
+          }
+          loading={index === 0 ? "eager" : "lazy"}
+          class="du-gallery-image"
+        />
+
+      </div>
+
+    ))}
+
+  </div>
+
+  {images.length > 1 && (
+    <>
+      <button
+        class="du-gallery-prev"
+        aria-label="Previous image"
+      >
+        ‹
+      </button>
+
+      <button
+        class="du-gallery-next"
+        aria-label="Next image"
+      >
+        ›
+      </button>
+    </>
+  )}
+
+</div>
+
+)}
+
+<script>
+
+document.querySelectorAll(".du-gallery").forEach((gallery)=>{
+
+    const track = gallery.querySelector(".du-gallery-track");
+
+    const slides = gallery.querySelectorAll(".du-gallery-slide");
+
+    const previous = gallery.querySelector(".du-gallery-prev");
+
+    const next = gallery.querySelector(".du-gallery-next");
+
+    let current = 0;
+
+    function update(){
+
+        if(!track) return;
+
+        track.style.transform =
+            `translateX(-${current*100}%)`;
+
+    }
+
+    previous?.addEventListener("click",()=>{
+
+        current--;
+
+        if(current<0){
+
+            current=slides.length-1;
+
+        }
+
+        update();
+
+    });
+
+    next?.addEventListener("click",()=>{
+
+        current++;
+
+        if(current>=slides.length){
+
+            current=0;
+
+        }
+
+        update();
+
+    });
+
+});
+
+</script>

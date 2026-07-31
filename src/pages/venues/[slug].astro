@@ -1,9 +1,9 @@
 ---
 import MainLayout from "../../layouts/MainLayout.astro";
 import { client } from "../../lib/sanity";
-import { urlFor } from "../../lib/image";
 import { PortableText } from "astro-portabletext";
 import Disclosure from "../../components/Disclosure.astro";
+import ImageGallery from "../../components/ImageGallery.astro";
 
 export async function getStaticPaths() {
   const reviews = await client.fetch(`
@@ -28,8 +28,9 @@ const review = await client.fetch(
     deck,
     rating,
     publishedDate,
-    heroImage,
-    body,
+heroImage,
+gallery,
+body,
     hosted,
     disclosure,
     venueType,
@@ -80,12 +81,13 @@ if (!review) {
 
   <section class="article-image">
 
-    <img
-      src={urlFor(review.heroImage).width(1600).url()}
-      alt={review.title}
-    />
+  <ImageGallery
+    heroImage={review.heroImage}
+    gallery={review.gallery}
+    title={review.title}
+  />
 
-  </section>
+</section>
 
   <section class="review-details">
 
