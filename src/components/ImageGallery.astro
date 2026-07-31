@@ -9,9 +9,12 @@ interface Props {
 
 const {
   heroImage,
-  gallery = [],
   title,
 } = Astro.props;
+
+const gallery = Array.isArray(Astro.props.gallery)
+  ? Astro.props.gallery
+  : [];
 
 const images = [
   ...(heroImage ? [heroImage] : []),
@@ -86,6 +89,9 @@ document.querySelectorAll(".du-gallery").forEach((gallery)=>{
 
     let current = 0;
 
+    let touchStartX = 0;
+    let touchEndX = 0;
+
     function update(){
 
         if(!track) return;
@@ -95,7 +101,7 @@ document.querySelectorAll(".du-gallery").forEach((gallery)=>{
 
     }
 
-    previous?.addEventListener("click",()=>{
+    function previousSlide(){
 
         current--;
 
@@ -107,9 +113,9 @@ document.querySelectorAll(".du-gallery").forEach((gallery)=>{
 
         update();
 
-    });
+    }
 
-    next?.addEventListener("click",()=>{
+    function nextSlide(){
 
         current++;
 
@@ -121,7 +127,44 @@ document.querySelectorAll(".du-gallery").forEach((gallery)=>{
 
         update();
 
-    });
+    }
+
+    previous?.addEventListener("click",previousSlide);
+
+    next?.addEventListener("click",nextSlide);
+
+    track?.addEventListener("touchstart",(event)=>{
+
+        touchStartX =
+            event.changedTouches[0].screenX;
+
+    },{passive:true});
+
+    track?.addEventListener("touchend",(event)=>{
+
+        touchEndX =
+            event.changedTouches[0].screenX;
+
+        const difference =
+            touchStartX-touchEndX;
+
+        if(Math.abs(difference)<50){
+
+            return;
+
+        }
+
+        if(difference>0){
+
+            nextSlide();
+
+        }else{
+
+            previousSlide();
+
+        }
+
+    },{passive:true});
 
 });
 
