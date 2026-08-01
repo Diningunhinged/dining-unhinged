@@ -5,7 +5,7 @@ import sitemap from "@astrojs/sitemap";
 
 export default defineConfig({
 
-  site: "https://dining-unhinged.pages.dev",
+  site: "https://diningunhinged.ca",
 
   integrations: [
     sitemap(),
