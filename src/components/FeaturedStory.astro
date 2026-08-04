@@ -24,6 +24,10 @@ const review = await client.fetch(`
 {review && (
 <section id="featured-story" class="featured-story">
 
+  <p class="featured-label">
+    FEATURED REVIEW
+  </p>
+
   <div class="featured-image">
     {review.heroImage && (
       <img
@@ -35,10 +39,6 @@ const review = await client.fetch(`
 
   <div class="featured-content">
 
-    <p class="featured-label">
-      FEATURED REVIEW
-    </p>
-
     <h2>{review.title}</h2>
 
     <p class="featured-location">
@@ -46,9 +46,7 @@ const review = await client.fetch(`
     </p>
 
     <div class="featured-stars">
-
       <StarRating rating={calculateOverall(review.scores)} />
-
     </div>
 
     {review.excerpt && (
