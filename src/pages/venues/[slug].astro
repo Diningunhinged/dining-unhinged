@@ -4,6 +4,8 @@ import { client } from "../../lib/sanity";
 import { PortableText } from "astro-portabletext";
 import Disclosure from "../../components/Disclosure.astro";
 import ImageGallery from "../../components/ImageGallery.astro";
+import OverallRating from "../../components/OverallRating.astro";
+import ReviewScorecard from "../../components/ReviewScorecard.astro";
 
 export async function getStaticPaths() {
   const reviews = await client.fetch(`
@@ -26,11 +28,11 @@ const review = await client.fetch(
   *[_type == "restaurantReview" && slug.current == $slug][0]{
     title,
     deck,
-    rating,
+    scores,
     publishedDate,
-heroImage,
-gallery,
-body,
+    heroImage,
+    gallery,
+    body,
     hosted,
     disclosure,
     venueType,
@@ -48,6 +50,7 @@ body,
 if (!review) {
   throw new Error(`Venue review not found: ${slug}`);
 }
+
 ---
 
 <MainLayout title={`${review.title} | Dining Unhinged`}>
@@ -64,9 +67,7 @@ if (!review) {
 
     <h1>{review.title}</h1>
 
-    <div class="article-stars">
-      {"★".repeat(review.rating)}
-    </div>
+    <OverallRating scores={review.scores} />
 
     <p class="article-deck">
       {review.deck}
@@ -81,13 +82,13 @@ if (!review) {
 
   <section class="article-image">
 
-  <ImageGallery
-    heroImage={review.heroImage}
-    gallery={review.gallery}
-    title={review.title}
-  />
+    <ImageGallery
+      heroImage={review.heroImage}
+      gallery={review.gallery}
+      title={review.title}
+    />
 
-</section>
+  </section>
 
   <section class="review-details">
 
@@ -114,7 +115,13 @@ if (!review) {
   </section>
 
   <section class="article-body">
+
     <PortableText value={review.body} />
+
   </section>
+
+  <ReviewScorecard
+  scores={review.scores}
+/>
 
 </MainLayout>

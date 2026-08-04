@@ -1,4 +1,6 @@
 ---
+import StarRating from "./StarRating.astro";
+
 interface Props {
   title: string;
   rating: number;
@@ -15,7 +17,7 @@ const {
   excerpt,
   image,
   url,
-} = Astro.props;
+}: Props = Astro.props;
 ---
 
 <article class="review-card">
@@ -35,7 +37,9 @@ const {
     <h3>{title}</h3>
 
     <div class="review-rating">
-      {"★".repeat(rating)}
+
+      <StarRating rating={rating} />
+
     </div>
 
     <p class="review-excerpt">

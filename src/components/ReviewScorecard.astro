@@ -1,0 +1,61 @@
+---
+import StarRating from "./StarRating.astro";
+
+interface ScoreItem {
+  category: string;
+  score: number;
+}
+
+interface Props {
+  title?: string;
+  scores: ScoreItem[];
+}
+
+const {
+  title = "The Damage Report",
+  scores,
+}: Props = Astro.props;
+---
+
+<section class="damage-report">
+
+    <div class="damage-header">
+
+        <h2>{title}</h2>
+
+    </div>
+
+    <div class="damage-divider"></div>
+
+    {
+
+        scores.map((item) => (
+
+            <div class="damage-row">
+
+                <div class="damage-top">
+
+                    <span>{item.category}</span>
+
+                    <span>{item.score.toFixed(1)}</span>
+
+                </div>
+
+                <StarRating rating={item.score} />
+
+                <div class="damage-bar">
+
+                    <div
+                        class="damage-fill"
+                        style={`width:${item.score * 20}%`}
+                    />
+
+                </div>
+
+            </div>
+
+        ))
+
+    }
+
+</section>

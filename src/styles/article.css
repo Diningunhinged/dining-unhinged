@@ -56,7 +56,7 @@
 
     line-height: .9;
 
-    margin-bottom: .75rem;
+    margin-bottom: .5rem;
 
 }
 
@@ -72,17 +72,19 @@
 
 }
 
-.article-deck {
+ .article-deck {
 
     max-width: 720px;
 
     color: var(--cream);
 
-    font-size: 1.6rem;
+    font-size: 1.45rem;
 
     font-style: italic;
 
-    line-height: 1.6;
+    line-height: 1.7;
+
+    margin-top: .25rem;
 
 }
 

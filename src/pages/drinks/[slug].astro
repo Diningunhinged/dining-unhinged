@@ -3,6 +3,8 @@ import MainLayout from "../../layouts/MainLayout.astro";
 import { client } from "../../lib/sanity";
 import { urlFor } from "../../lib/image";
 import { PortableText } from "astro-portabletext";
+import OverallRating from "../../components/OverallRating.astro";
+import ReviewScorecard from "../../components/ReviewScorecard.astro";
 
 export async function getStaticPaths() {
   const drinks = await client.fetch(`
@@ -27,9 +29,10 @@ const drink = await client.fetch(
     storyHook,
     drinkType,
     spirit,
-    rating,
+    scores,
     publishedDate,
     heroImage,
+    gallery,
     body,
     venue->{
       name,
@@ -44,6 +47,7 @@ const drink = await client.fetch(
 if (!drink) {
   throw new Error(`Drink review not found: ${slug}`);
 }
+
 ---
 
 <MainLayout title={`${drink.title} | Dining Unhinged`}>
@@ -60,9 +64,7 @@ if (!drink) {
 
     <h1>{drink.title}</h1>
 
-    <div class="article-stars">
-      {"★".repeat(drink.rating ?? 5)}
-    </div>
+    <OverallRating scores={drink.scores} />
 
     <p class="article-deck">
       {drink.storyHook}
@@ -92,7 +94,7 @@ if (!drink) {
     </div>
 
     <div class="detail-box">
-      <span class="detail-label">Primary Spirit</span>
+      <span class="detail-label">Base Spirit</span>
       <strong>{drink.spirit}</strong>
     </div>
 
@@ -108,5 +110,9 @@ if (!drink) {
     <PortableText value={drink.body} />
 
   </section>
+
+  <ReviewScorecard
+  scores={drink.scores}
+/>
 
 </MainLayout>

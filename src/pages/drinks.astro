@@ -3,11 +3,12 @@ import MainLayout from "../layouts/MainLayout.astro";
 import ReviewCard from "../components/ReviewCard.astro";
 import { client } from "../lib/sanity";
 import { urlFor } from "../lib/image";
+import { calculateOverall } from "../lib/calculateOverall";
 
 const drinks = await client.fetch(`
   *[_type == "cocktailReview"] | order(publishedDate desc){
     title,
-    rating,
+    scores,
     storyHook,
     heroImage,
     "slug": slug.current,
@@ -33,14 +34,16 @@ const drinks = await client.fetch(`
     <div class="restaurant-grid">
 
       {drinks.map((drink: any) => (
+
         <ReviewCard
           title={drink.title}
-          rating={drink.rating ?? 5}
+          rating={calculateOverall(drink.scores)}
           category={`${drink.venue?.name ?? ""} • ${drink.venue?.city ?? ""}, ${drink.venue?.province ?? ""}`}
           excerpt={drink.storyHook}
           image={urlFor(drink.heroImage).width(800).url()}
           url={`/drinks/${drink.slug}`}
         />
+
       ))}
 
     </div>

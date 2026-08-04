@@ -1,0 +1,21 @@
+---
+import StarRating from "./StarRating.astro";
+import {
+  calculateOverall,
+  type ScoreItem,
+} from "../lib/calculateOverall";
+
+interface Props {
+  scores: ScoreItem[];
+}
+
+const { scores }: Props = Astro.props;
+
+const overall = calculateOverall(scores);
+---
+
+<div class="overall-rating">
+
+    <StarRating rating={overall} />
+
+</div>

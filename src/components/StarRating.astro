@@ -1,0 +1,60 @@
+---
+interface Props {
+  rating?: number | null;
+}
+
+const rating =
+  typeof Astro.props.rating === "number"
+    ? Astro.props.rating
+    : 0;
+
+const stars = Array.from({ length: 5 }, (_, i) => {
+  const fill = Math.max(
+    0,
+    Math.min(100, Math.round((rating - i) * 100))
+  );
+
+  return fill;
+});
+---
+
+<div class="du-stars">
+
+  {stars.map((fill) => (
+
+    <div class="du-star">
+
+      <!-- Full grey background star -->
+      <svg
+        viewBox="0 0 24 24"
+        class="du-star-empty"
+      >
+        <path
+          d="M12 2l2.9 6.2 6.8.6-5 4.5 1.5 6.7L12 16.9 5.8 20l1.5-6.7-5-4.5 6.8-.6z"
+        />
+      </svg>
+
+      <!-- Gold overlay, clipped left to right -->
+      <div
+        class="du-star-fill"
+        style={`width: ${fill}%`}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          class="du-star-gold"
+        >
+          <path
+            d="M12 2l2.9 6.2 6.8.6-5 4.5 1.5 6.7L12 16.9 5.8 20l1.5-6.7-5-4.5 6.8-.6z"
+          />
+        </svg>
+      </div>
+
+    </div>
+
+  ))}
+
+  <span class="du-rating">
+    {rating.toFixed(1)}
+  </span>
+
+</div>

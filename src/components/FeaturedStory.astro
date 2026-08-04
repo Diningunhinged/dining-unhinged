@@ -1,13 +1,15 @@
 ---
 import { client } from "../lib/sanity";
 import { urlFor } from "../lib/image";
+import StarRating from "./StarRating.astro";
+import { calculateOverall } from "../lib/calculateOverall";
 
 const review = await client.fetch(`
   *[_type == "restaurantReview"]
   | order(publishedDate desc)[0]{
     title,
     slug,
-    rating,
+    scores,
     excerpt,
     heroImage,
     venue->{
@@ -44,7 +46,9 @@ const review = await client.fetch(`
     </p>
 
     <div class="featured-stars">
-      {"★".repeat(review.rating ?? 0)}
+
+      <StarRating rating={calculateOverall(review.scores)} />
+
     </div>
 
     {review.excerpt && (

@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import { client } from "../../lib/sanity";
 import { urlFor } from "../../lib/image";
+import { calculateOverall } from "../../lib/calculateOverall";
 
 export const GET: APIRoute = async () => {
 
@@ -8,7 +9,7 @@ export const GET: APIRoute = async () => {
   {
     "venues": *[_type == "restaurantReview"]{
       title,
-      rating,
+      scores,
       "slug": slug.current,
       heroImage,
       venueType,
@@ -26,7 +27,7 @@ export const GET: APIRoute = async () => {
 
     "drinks": *[_type == "cocktailReview"]{
       title,
-      rating,
+      scores,
       "slug": slug.current,
       drinkType,
       heroImage,
@@ -45,46 +46,46 @@ export const GET: APIRoute = async () => {
   `);
 
   const venueResults = data.venues
-    .filter((r:any)=>r.venue?.location)
-    .map((r:any)=>({
+    .filter((r: any) => r.venue?.location)
+    .map((r: any) => ({
 
-      type:"venue",
+      type: "venue",
 
-      category:r.venueType,
+      category: r.venueType,
 
-      title:r.title,
+      title: r.title,
 
-      slug:r.slug,
+      slug: r.slug,
 
-      rating:r.rating,
+      rating: calculateOverall(r.scores),
 
-      heroImage:r.heroImage
+      heroImage: r.heroImage
         ? urlFor(r.heroImage).width(700).url()
         : null,
 
-      venue:r.venue
+      venue: r.venue
 
     }));
 
   const drinkResults = data.drinks
-    .filter((r:any)=>r.venue?.location)
-    .map((r:any)=>({
+    .filter((r: any) => r.venue?.location)
+    .map((r: any) => ({
 
-      type:"drink",
+      type: "drink",
 
-      category:r.drinkType,
+      category: r.drinkType,
 
-      title:r.title,
+      title: r.title,
 
-      slug:r.slug,
+      slug: r.slug,
 
-      rating:r.rating,
+      rating: calculateOverall(r.scores),
 
-      heroImage:r.heroImage
+      heroImage: r.heroImage
         ? urlFor(r.heroImage).width(700).url()
         : null,
 
-      venue:r.venue
+      venue: r.venue
 
     }));
 
@@ -102,9 +103,9 @@ export const GET: APIRoute = async () => {
 
     {
 
-      headers:{
+      headers: {
 
-        "Content-Type":"application/json"
+        "Content-Type": "application/json"
 
       }
 
